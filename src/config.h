@@ -4,7 +4,8 @@
 const char SSID[] = "....";
 const char WIFI_PASS[] = "password";
 
-const char UNIT_ID[] = "Tengu01"; 
+const char UNIT_ID[] = "Tengu01";
+const int VERSION = 1;
 
 const long SERIAL_BAUD = 57600;
 
@@ -24,8 +25,11 @@ const byte ANALOG_IN = A0;
 const long SENSOR_CHECK_INTERVAL = 5000; // Time between sensor reads
 
 // JSON string tags
-const char ID[] = "id";
-const char VERSION[] = "version";
-const char AIR_TEMP[] = "air_temp";
-const char HUMIDITY[] = "humidity";
-const char ILLUMINANCE[] = "illuminance";
+
+struct SensorData{
+    const char* id;
+    int version;
+    float air_temperature;
+    float humidity;
+    int illuminance;
+};

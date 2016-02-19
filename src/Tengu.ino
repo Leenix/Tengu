@@ -17,8 +17,7 @@ ESP8266WiFiMulti wifi_multi;
 int wifi_status = WL_DISCONNECTED;
 
 // Misc
-StaticJsonBuffer<200> data_buffer;
-JsonObject& data = data_buffer.createObject();
+SensorData data;
 
 SimpleTimer timer;
 int temperature_timer = -1;
@@ -32,10 +31,14 @@ DHT humidity_sensor(HUMIDITY_PIN, DHT11);
 BH1750 light_meter;
 
 IRsend ir_blaster(IR_SEND_PIN);
+IRrecv ir_receiver(IR_RECEIVE_PIN);
 
 ///////////////////////////////////////////////////////////////////////////////
 
 void setup(){
+    data.id = UNIT_ID;
+    data.version = VERSION;
+
     Serial.begin(SERIAL_BAUD);
 
     start_wifi();
@@ -95,12 +98,21 @@ String assemble_dweet_string(){
     */
 
     String dweet_string = "http://dweet.io/dweet/for/";
-    dweet_string += UNIT_ID;
+    dweet_string += data.id;
     dweet_string += '?';
+
+    // Convert data object into JSON
+    StaticJsonBuffer<200> data_buffer;
+    JsonObject& output_packet = data_buffer.createObject();
+    output_packet["id"] = data.id;
+    output_packet["version"] = data.version;
+    output_packet["air_temperature"] = data.air_temperature;
+    output_packet["humidity"] = data.humidity;
+    output_packet["illuminance"] = data.illuminance;
 
     // Add the entry data to the upload string
     // https://github.com/bblanchon/ArduinoJson/wiki/Decoding-JSON
-    for (JsonObject::iterator it=data.begin(); it!=data.end(); ++it){
+    for (JsonObject::iterator it=output_packet.begin(); it!=output_packet.end(); ++it){
         dweet_string += it->key;
         dweet_string += '=';
         dweet_string += it->value.asString();
@@ -119,11 +131,12 @@ void start_temperature(){
   temperature_sensor.begin();
   temperature_sensor.setResolution(12);
 
+  update_temperature();
   temperature_timer = timer.setInterval(SENSOR_CHECK_INTERVAL, update_temperature);
 }
 
 void update_temperature(){
-    data[AIR_TEMP] = get_temperature();
+    data.air_temperature = get_temperature();
 }
 
 float get_temperature(){
@@ -140,8 +153,7 @@ void start_humidity(){
 
 void update_humidity(){
     /* Update the humidity data entry    */
-
-    data[HUMIDITY] = get_humidity();
+    data.humidity = get_humidity();
 }
 
 float get_humidity(){
@@ -160,9 +172,22 @@ void start_illuminance(){
 }
 
 void update_illuminance(){
-    data[ILLUMINANCE] = get_illuminance();
+    data.illuminance = get_illuminance();
 }
 
 int get_illuminance(){
     return light_meter.readLightLevel();
+}
+
+// IR
+void start_ir_blaster(){
+    ir_blaster.begin();
+}
+
+void switch_ac(bool state){
+
+}
+
+void set_ac_temperature(int temperature){
+
 }
