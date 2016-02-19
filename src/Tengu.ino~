@@ -1,0 +1,83 @@
+#include "config.h"
+
+#include <OneWire.h>
+#include <DallasTemperature.h>
+#include <SimpleTimer.h>
+#include <DHT.h>
+#include <ArduinoJson.h>
+#include <BH1750.h>
+
+#include "IRremoteESP8266.h"
+
+// Misc
+JsonObject<20> sensorEntry;
+
+SimpleTimer timer;
+int temperature_timer = -1;
+int humidity_timer = -1;
+int illuminance_timer = -1;
+
+
+// Sensor Config
+OneWire onewire(TEMPERATURE_PIN);
+DallasTemperature temperature_sensor(&onewire);
+
+DHT humidity_sensor(HUMIDITY_PIN, DHT11);
+
+IRsend ir_blaster(IR_SEND_PIN);
+
+///////////////////////////////////////////////////////////////////////////////
+
+void setup(){
+
+}
+
+/**
+* Main loop
+*/
+void loop(){
+
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+// Temperature
+void start_temperature(){
+
+}
+
+void update_temperature(){
+
+}
+
+float get_temperature(){
+
+}
+
+
+
+// Humidity
+void start_humidity(){
+
+}
+
+void update_humidity(){
+
+}
+
+float get_humidity(){
+
+}
+
+// Light
+void start_illuminance(){
+
+}
+
+void update_illuminance(){
+
+}
+
+float get_illuminance(){
+
+}
