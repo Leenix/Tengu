@@ -1,0 +1,28 @@
+{
+    "name": "BH1750", 
+    "repository": {
+        "url": "https://github.com/claws/BH1750.git", 
+        "type": "git"
+    }, 
+    "platforms": [
+        "atmelavr"
+    ], 
+    "frameworks": [
+        "arduino"
+    ], 
+    "version": "24f3a0044a", 
+    "authors": [
+        {
+            "maintainer": false, 
+            "name": "claws", 
+            "url": "https://github.com/claws", 
+            "email": null
+        }
+    ], 
+    "keywords": [
+        "light", 
+        "sensor"
+    ], 
+    "id": 439, 
+    "description": "Digital light sensor breakout boards containing the BH1750FVI IC"
+}

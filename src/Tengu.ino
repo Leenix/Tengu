@@ -1,4 +1,5 @@
 #include "config.h"
+#include "Arduino.h"
 
 #include "IRremoteESP8266.h"
 

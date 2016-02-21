@@ -33,3 +33,20 @@ struct SensorData{
     float humidity;
     int illuminance;
 };
+
+// Function headers...
+void start_wifi();
+bool upload_data();
+String assemble_dweet_string();
+void start_temperature();
+void update_temperature();
+float get_temperature();
+void start_humidity();
+void update_humidity();
+float get_humidity();
+void start_illuminance();
+void update_illuminance();
+int get_illuminance();
+void start_ir_blaster();
+void switch_ac(bool state);
+void set_ac_temperature(int temperature);
