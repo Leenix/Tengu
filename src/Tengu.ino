@@ -3,6 +3,7 @@
 
 #include "IRremoteESP8266.h"
 
+#include <Logging.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #include <SimpleTimer.h>
@@ -40,7 +41,8 @@ void setup(){
     data.id = UNIT_ID;
     data.version = VERSION;
 
-    Serial.begin(SERIAL_BAUD);
+    Log.Init(SERIAL_BAUD, LOG_LEVEL);
+    Log.Info("%s starting. ver %d", data.id, data.version);
 
     start_wifi();
     start_temperature();
@@ -58,7 +60,7 @@ void loop(){
 void start_wifi(){
     // Wait 4 seconds for WiFi to initialise
     for (size_t i = 4; i > 0; i--) {
-        Serial.printf("WiFi starting; wait %d seconds....\n", i);
+        Log.Info("WiFi starting; wait %d seconds....\n", i);
         Serial.flush();
         delay(1000);
     }
@@ -127,17 +129,20 @@ String assemble_dweet_string(){
     return dweet_string;
 }
 
+
 // Temperature
 void start_temperature(){
-  temperature_sensor.begin();
-  temperature_sensor.setResolution(12);
+    Log.Debug("Starting temperature...");
+    temperature_sensor.begin();
+    temperature_sensor.setResolution(12);
 
-  update_temperature();
-  temperature_timer = timer.setInterval(SENSOR_CHECK_INTERVAL, update_temperature);
+    update_temperature();
+        temperature_timer = timer.setInterval(SENSOR_CHECK_INTERVAL, update_temperature);
 }
 
 void update_temperature(){
     data.air_temperature = get_temperature();
+    Log.Verbose("Air temperature: %d", int(data.air_temperature));
 }
 
 float get_temperature(){
@@ -145,16 +150,20 @@ float get_temperature(){
     return temperature_sensor.getTempCByIndex(0);
 }
 
+
 // Humidity
 void start_humidity(){
+    Log.Debug("Starting humidity...");
     humidity_sensor.begin();
 
+    update_humidity();
     humidity_timer = timer.setInterval(SENSOR_CHECK_INTERVAL, update_humidity);
 }
 
 void update_humidity(){
     /* Update the humidity data entry    */
     data.humidity = get_humidity();
+    Log.Verbose("Humidity: %d", int(data.humidity));
 }
 
 float get_humidity(){
@@ -165,8 +174,10 @@ float get_humidity(){
     return humidity_sensor.readHumidity();
 }
 
+
 // Light
 void start_illuminance(){
+    Log.Debug("Starting illuminance...");
     light_meter.begin(BH1750_CONTINUOUS_HIGH_RES_MODE);
 
     illuminance_timer = timer.setInterval(SENSOR_CHECK_INTERVAL, update_illuminance);
@@ -174,11 +185,13 @@ void start_illuminance(){
 
 void update_illuminance(){
     data.illuminance = get_illuminance();
+    Log.Verbose("Illuminance: %d", data.illuminance);
 }
 
 int get_illuminance(){
     return light_meter.readLightLevel();
 }
+
 
 // IR
 void start_ir_blaster(){
@@ -186,7 +199,7 @@ void start_ir_blaster(){
 }
 
 void switch_ac(bool state){
-
+    
 }
 
 void set_ac_temperature(int temperature){

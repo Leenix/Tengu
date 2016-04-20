@@ -1,4 +1,5 @@
 #include "Arduino.h"
+#include "Logging.h"
 
 // Wifi Config
 const char SSID[] = "....";
@@ -8,6 +9,7 @@ const char UNIT_ID[] = "Tengu01";
 const int VERSION = 1;
 
 const long SERIAL_BAUD = 57600;
+const long LOG_LEVEL = LOG_LEVEL_VERBOSE;
 
 // Pin assignments
 const byte MOTION_PIN = D0;
