@@ -55,7 +55,7 @@ void loop(){
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
+ 
 // Wifi
 void start_wifi(){
     // Wait 4 seconds for WiFi to initialise
@@ -199,7 +199,7 @@ void start_ir_blaster(){
 }
 
 void switch_ac(bool state){
-    
+
 }
 
 void set_ac_temperature(int temperature){
