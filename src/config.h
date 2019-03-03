@@ -1,7 +1,21 @@
 #include "Arduino.h"
 #include "Logging.h"
+#include "DHT.h"
 
+///////////////////////////////////////////////////////////////////////////////
+// Component Enable
+
+const bool WIFI_ENABLED = false;
+const bool TEMPERATURE_ENABLED = true;
+const bool HUMIDITY_ENABLED = false;
+const bool ILLUMINANCE_ENABLED = false;
+const bool IR_BLASTER_ENABLED = false;
+const bool IR_RECEIVER_ENABLED = false;
+
+
+///////////////////////////////////////////////////////////////////////////////
 // Wifi Config
+
 const char SSID[] = "....";
 const char WIFI_PASS[] = "password";
 
@@ -11,7 +25,10 @@ const int VERSION = 1;
 const long SERIAL_BAUD = 57600;
 const long LOG_LEVEL = LOG_LEVEL_VERBOSE;
 
+
+///////////////////////////////////////////////////////////////////////////////
 // Pin assignments
+
 const byte MOTION_PIN = D0;
 const byte HUMIDITY_PIN = D3;
 const byte IR_RECEIVE_PIN = D5;
@@ -23,10 +40,22 @@ const byte SWITCH_1_PIN = D7;
 const byte SWITCH_2_PIN = D4;
 const byte ANALOG_IN = A0;
 
-// Timer variables
-const long SENSOR_CHECK_INTERVAL = 5000; // Time between sensor reads
 
-// JSON string tags
+///////////////////////////////////////////////////////////////////////////////
+// Timer variables
+
+const long SENSOR_CHECK_INTERVAL = 5000; // Time between sensor reads is millis
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Sensor variables
+
+const int HUMIDITY_SENSOR_TYPE = DHT22;
+const int TEMPERATURE_SENSOR_RESOLUTION = 12;
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Data structures
 
 struct SensorData{
     const char* id;
@@ -36,7 +65,9 @@ struct SensorData{
     int illuminance;
 };
 
-// Function headers...
+///////////////////////////////////////////////////////////////////////////////
+// Function headers
+
 void start_wifi();
 bool upload_data();
 String assemble_dweet_string();
@@ -52,3 +83,4 @@ int get_illuminance();
 void start_ir_blaster();
 void switch_ac(bool state);
 void set_ac_temperature(int temperature);
+void start_ir_receiver();
